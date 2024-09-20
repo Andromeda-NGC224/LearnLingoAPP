@@ -1,5 +1,9 @@
 .mainContainer {
   padding: 0px 4.5% 0px 4.5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 .Hero {
   display: flex;
@@ -9,8 +13,7 @@
   justify-content: center;
 }
 .HeroText {
-  flex: 0 0 56%;
-  max-width: 720px;
+  width: 720px;
   border-radius: 30px;
   background-color: #f8f8f8;
   padding: 98px 90px 98px 64px;
@@ -51,10 +54,65 @@
 .HeroBtn:focus {
   background-color: #fbe9ba;
 }
-.HeroPic {
-  max-width: 568px;
-  flex: 0 0 44%;
+.HeroPicContainer {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 568px;
   border-radius: 30px;
   background-color: #fbe9ba;
   box-sizing: border-box;
+}
+.HeroPicBoy {
+  width: 339px;
+  height: 339px;
+  background-image: url("/src/img/68e4226188648a055ee1b42bed644f46-sticker\ 1.png");
+  background-size: cover;
+  background-position: center;
+  box-sizing: border-box;
+}
+.HeroPicIMac {
+  width: 360px;
+  height: 247px;
+  position: absolute;
+  bottom: -88px;
+  background-image: url("/src/img/Union.png");
+  background-size: cover;
+  box-sizing: border-box;
+  border-radius: 8px;
+}
+.HeroPicApple {
+  position: absolute;
+  bottom: 55px;
+}
+.HeroAchievements {
+  padding: 40px 120px;
+  border: 2px dashed #f4c550;
+  border-radius: 30px;
+  box-sizing: border-box;
+  width: 1312px;
+}
+.AchievementsList {
+  display: flex;
+  justify-content: space-evenly;
+  box-sizing: border-box;
+}
+.AchievementsItem {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.AchievementsItemNum {
+  font-size: 28px;
+  font-weight: 500;
+  text-wrap: nowrap;
+}
+.AchievementsItemText {
+  max-width: 96px;
+  font-size: 14px;
+  color: #121417;
+  opacity: 0.7;
+  text-wrap: wrap;
 }

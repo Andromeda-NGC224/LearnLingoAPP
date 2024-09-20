@@ -2,12 +2,19 @@ import { Link, NavLink } from "react-router-dom";
 import css from "./Header.module.css";
 import clsx from "clsx";
 import { FiLogIn } from "react-icons/fi";
+import { useState } from "react";
+import ModalLogIn from "../Modal/ModalLogIn.jsx";
 
 const NavLinkStyle = ({ isActive }) => {
   return clsx(css.link, isActive && css.active);
 };
 
 export default function Header() {
+  const [showModal, setShowModal] = useState(false);
+  const toggleModal = () => {
+    setShowModal(!showModal);
+  };
+
   return (
     <header className={css.header}>
       <Link to={"/"} className={css.logo}>
@@ -44,12 +51,13 @@ export default function Header() {
         </ul>
       </nav>
       <div className={css.auth}>
-        <button className={css.loginBtn}>
+        <button onClick={toggleModal} className={css.loginBtn}>
           <FiLogIn size={20} color={"#F4C550"} />
           <p className={css.loginBtnText}>Log in</p>
         </button>
         <button className={css.registerBtn}>Registration</button>
       </div>
+      {showModal && <ModalLogIn toggleModal={toggleModal} />}
     </header>
   );
 }
