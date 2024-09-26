@@ -3,16 +3,22 @@ import css from "./Header.module.css";
 import clsx from "clsx";
 import { FiLogIn } from "react-icons/fi";
 import { useState } from "react";
-import ModalLogIn from "../Modal/ModalLogIn.jsx";
+import ModalLogin from "../ModalLogin/ModalLogin.jsx";
+import ModalRegister from "../ModalRegister/ModalRegister.jsx";
 
 const NavLinkStyle = ({ isActive }) => {
   return clsx(css.link, isActive && css.active);
 };
 
 export default function Header() {
-  const [showModal, setShowModal] = useState(false);
-  const toggleModal = () => {
-    setShowModal(!showModal);
+  const [showModalLogin, setShowModalLogin] = useState(false);
+  const [showModalRegister, setShowModalRegister] = useState(false);
+
+  const toggleModalLogin = () => {
+    setShowModalLogin(!showModalLogin);
+  };
+  const toggleModalRegister = () => {
+    setShowModalRegister(!showModalRegister);
   };
 
   return (
@@ -51,13 +57,18 @@ export default function Header() {
         </ul>
       </nav>
       <div className={css.auth}>
-        <button onClick={toggleModal} className={css.loginBtn}>
+        <button onClick={toggleModalLogin} className={css.loginBtn}>
           <FiLogIn size={20} color={"#F4C550"} />
           <p className={css.loginBtnText}>Log in</p>
         </button>
-        <button className={css.registerBtn}>Registration</button>
+        <button onClick={toggleModalRegister} className={css.registerBtn}>
+          Registration
+        </button>
       </div>
-      {showModal && <ModalLogIn toggleModal={toggleModal} />}
+      {showModalLogin && <ModalLogin toggleModalLogin={toggleModalLogin} />}
+      {showModalRegister && (
+        <ModalRegister toggleModalRegister={toggleModalRegister} />
+      )}
     </header>
   );
 }
