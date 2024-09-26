@@ -4,10 +4,6 @@
   "framework": "vite",
   "rewrites": [
     {
-      "source": "/env.js",
-      "destination": "/api/env.js"
-    },
-    {
       "source": "/(.*)",
       "destination": "/"
     }
