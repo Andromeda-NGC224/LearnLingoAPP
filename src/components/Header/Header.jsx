@@ -1,24 +1,33 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import css from "./Header.module.css";
 import clsx from "clsx";
 import { FiLogIn } from "react-icons/fi";
 import { useState } from "react";
 import ModalLogin from "../ModalLogin/ModalLogin.jsx";
 import ModalRegister from "../ModalRegister/ModalRegister.jsx";
+import { logout } from "../../FireBase/auth.js";
+import { useAuth } from "../../utils/AuthContext.jsx";
 
 const NavLinkStyle = ({ isActive }) => {
   return clsx(css.link, isActive && css.active);
 };
 
 export default function Header() {
+  const navigate = useNavigate();
   const [showModalLogin, setShowModalLogin] = useState(false);
   const [showModalRegister, setShowModalRegister] = useState(false);
+  const { token, updateToken } = useAuth();
 
   const toggleModalLogin = () => {
     setShowModalLogin(!showModalLogin);
   };
   const toggleModalRegister = () => {
     setShowModalRegister(!showModalRegister);
+  };
+  const handleLogout = async () => {
+    await logout();
+    updateToken(null);
+    navigate("/");
   };
 
   return (
@@ -57,13 +66,21 @@ export default function Header() {
         </ul>
       </nav>
       <div className={css.auth}>
-        <button onClick={toggleModalLogin} className={css.loginBtn}>
-          <FiLogIn size={20} color={"#F4C550"} />
-          <p className={css.loginBtnText}>Log in</p>
-        </button>
-        <button onClick={toggleModalRegister} className={css.registerBtn}>
-          Registration
-        </button>
+        {token ? ( // Перевіряємо наявність токена
+          <button onClick={handleLogout} className={css.logoutBtn}>
+            Logout
+          </button>
+        ) : (
+          <>
+            <button onClick={toggleModalLogin} className={css.loginBtn}>
+              <FiLogIn size={20} color={"#F4C550"} />
+              <p className={css.loginBtnText}>Log in</p>
+            </button>
+            <button onClick={toggleModalRegister} className={css.registerBtn}>
+              Registration
+            </button>
+          </>
+        )}
       </div>
       {showModalLogin && <ModalLogin toggleModalLogin={toggleModalLogin} />}
       {showModalRegister && (

@@ -32,6 +32,12 @@
   color: #121417;
   transition: color 0.35s ease;
 }
+.errorMessageYup {
+  position: absolute;
+  color: #f4c550;
+  top: 52px;
+  left: 0;
+}
 .closeButton:hover,
 .closeButton:focus {
   color: #f4c550;
@@ -61,10 +67,17 @@
   font-size: 16px;
 }
 .inputContainer {
+  position: relative;
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 18px;
+}
+.errorMessage {
+  position: absolute;
+  color: #f4c550;
+  top: -24px;
+  left: 0;
 }
 .label {
   position: relative;
@@ -78,6 +91,7 @@
   transition: color 0.35s ease;
 }
 .input {
+  position: relative;
   font-size: 16px;
   color: #121417;
   width: 100%;

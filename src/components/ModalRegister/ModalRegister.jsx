@@ -5,9 +5,14 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { register } from "../../FireBase/auth.js";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../utils/AuthContext.jsx";
 
 export default function ModalRegister({ toggleModalRegister }) {
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+  const { updateToken } = useAuth();
 
   const handleOverlayClick = (event) => {
     if (event.target === event.currentTarget) {
@@ -44,10 +49,12 @@ export default function ModalRegister({ toggleModalRegister }) {
   const handleRegister = async (values, { setSubmitting }) => {
     const { name, email, password } = values;
     try {
-      await register(name, email, password);
+      const response = await register(name, email, password);
+      updateToken(response.accessToken);
       toggleModalRegister();
+      navigate("/teachers");
     } catch (err) {
-      console.log("Error during registration.", err);
+      setError("An account with this email already exists.");
     } finally {
       setSubmitting(false);
     }
@@ -76,7 +83,8 @@ export default function ModalRegister({ toggleModalRegister }) {
               </div>
 
               <div className={css.inputContainer}>
-                <label htmlFor="name">
+                {error && <div className={css.errorMessage}>{error}</div>}
+                <label className={css.label} htmlFor="name">
                   <Field
                     className={css.input}
                     type="text"
@@ -87,11 +95,11 @@ export default function ModalRegister({ toggleModalRegister }) {
                   <ErrorMessage
                     name="name"
                     component="div"
-                    className={css.errorMessage}
+                    className={css.errorMessageYup}
                   />
                 </label>
 
-                <label htmlFor="email">
+                <label className={css.label} htmlFor="email">
                   <Field
                     className={css.input}
                     type="email"
@@ -102,7 +110,7 @@ export default function ModalRegister({ toggleModalRegister }) {
                   <ErrorMessage
                     name="email"
                     component="div"
-                    className={css.errorMessage}
+                    className={css.errorMessageYup}
                   />
                 </label>
 
@@ -127,7 +135,7 @@ export default function ModalRegister({ toggleModalRegister }) {
                   <ErrorMessage
                     name="password"
                     component="div"
-                    className={css.errorMessage}
+                    className={css.errorMessageYup}
                   />
                 </label>
               </div>

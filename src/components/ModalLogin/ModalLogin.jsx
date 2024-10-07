@@ -5,9 +5,14 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { login } from "../../FireBase/auth.js";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../utils/AuthContext.jsx";
 
 export default function ModalLogin({ toggleModalLogin }) {
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+  const { updateToken } = useAuth();
 
   const validationSchema = Yup.object().shape({
     email: Yup.string()
@@ -43,10 +48,12 @@ export default function ModalLogin({ toggleModalLogin }) {
   const handleLogin = async (values, { setSubmitting }) => {
     const { email, password } = values;
     try {
-      await login(email, password);
+      const response = await login(email, password);
+      updateToken(response.user.accessToken);
       toggleModalLogin();
+      navigate("/teachers");
     } catch (err) {
-      console.log("Incorrect password or login.");
+      setError("Incorrect password or login.");
     } finally {
       setSubmitting(false);
     }
@@ -74,6 +81,7 @@ export default function ModalLogin({ toggleModalLogin }) {
               </div>
 
               <div className={css.inputContainer}>
+                {error && <div className={css.errorMessage}>{error}</div>}
                 <label htmlFor="email">
                   <Field
                     className={css.input}
@@ -85,7 +93,7 @@ export default function ModalLogin({ toggleModalLogin }) {
                   <ErrorMessage
                     name="email"
                     component="div"
-                    className={css.errorMessage}
+                    className={css.errorMessageYup}
                   />
                 </label>
 
@@ -110,7 +118,7 @@ export default function ModalLogin({ toggleModalLogin }) {
                   <ErrorMessage
                     name="password"
                     component="div"
-                    className={css.errorMessage}
+                    className={css.errorMessageYup}
                   />
                 </label>
               </div>
