@@ -58,15 +58,17 @@ export default function Header() {
               Teachers
             </NavLink>
           </li>
-          <li className={css.navItem}>
-            <NavLink to={"/favorites"} className={NavLinkStyle}>
-              Favorites
-            </NavLink>
-          </li>
+          {token && (
+            <li className={css.navItem}>
+              <NavLink to={"/favorites"} className={NavLinkStyle}>
+                Favorites
+              </NavLink>
+            </li>
+          )}
         </ul>
       </nav>
       <div className={css.auth}>
-        {token ? ( // Перевіряємо наявність токена
+        {token ? (
           <button onClick={handleLogout} className={css.logoutBtn}>
             Logout
           </button>

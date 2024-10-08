@@ -1,0 +1,141 @@
+.mainList {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3vw;
+  padding: 2.5vw 9vw;
+}
+
+.mainListItem {
+  width: 100%;
+  padding: 2.5vw;
+  display: flex;
+  position: relative;
+  border-radius: 20px;
+  background-color: #f8f8f8;
+  gap: 3vw;
+}
+.imgContainer {
+  border: 2px solid #fbe9ba;
+  border-radius: 100rem;
+  min-width: 8rem;
+  height: 8rem;
+  overflow: hidden;
+  padding: 0.5vw;
+}
+.photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 100rem;
+}
+.topContainer {
+  flex-wrap: wrap;
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 0.5vw;
+}
+.topList {
+  display: flex;
+  gap: 1vw;
+  flex-wrap: wrap;
+}
+.topFirstItem {
+  color: gray;
+}
+.topItems {
+  display: flex;
+  align-items: center;
+  gap: 0.5vw;
+  border-right: 1px solid #8b8b8b;
+  padding-right: 1vw;
+  font-weight: bold;
+}
+.moneySpan {
+  color: #38cd3e;
+}
+.topItems:last-child {
+  border-right: none;
+}
+.name {
+  padding-bottom: 2vw;
+}
+.listInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5vw;
+  padding-bottom: 1vw;
+}
+.listInfoItem {
+  font-weight: bold;
+}
+.listInfoItemLang {
+  text-decoration: underline;
+}
+.listInfoItemSpan {
+  font-weight: normal;
+  color: #8a8a89;
+}
+.readmore {
+  text-decoration: underline;
+  font-weight: bold;
+  padding-bottom: 2vw;
+  cursor: pointer;
+}
+.readMoreExp {
+  padding-bottom: 2vw;
+  font-weight: 500;
+}
+.levelsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5vw;
+}
+.levelsListItem {
+  border: 1px solid gray;
+  border-radius: 100rem;
+  padding: 0.5vw 0.8vw;
+  font-size: 14px;
+  font-weight: bold;
+}
+.levelsListItem:first-child {
+  border: none;
+  background-color: #f4c550;
+}
+.reviewList {
+  display: flex;
+  flex-direction: column;
+  gap: 2vw;
+  font-weight: bold;
+  padding-bottom: 2vw;
+}
+.mainReviewerContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1vw;
+}
+.reviewerImgAndRating {
+  display: flex;
+  gap: 0.8vw;
+  align-items: center;
+}
+.reviewerName {
+  color: gray;
+}
+
+.favBtn {
+  position: absolute;
+  border: none;
+  background-color: transparent;
+  top: 2vw;
+  right: 2vw;
+}
+.bookingBtn {
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  border-radius: 1rem;
+  padding: 1vw 3vw;
+  margin-top: 2vw;
+  background-color: #f4c550;
+}
