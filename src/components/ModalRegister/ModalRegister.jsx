@@ -7,12 +7,13 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../utils/AuthContext.jsx";
+import toast from "react-hot-toast";
 
 export default function ModalRegister({ toggleModalRegister }) {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { updateToken } = useAuth();
+  const { updateToken, updateUserId } = useAuth();
 
   const handleOverlayClick = (event) => {
     if (event.target === event.currentTarget) {
@@ -49,12 +50,13 @@ export default function ModalRegister({ toggleModalRegister }) {
   const handleRegister = async (values, { setSubmitting }) => {
     const { name, email, password } = values;
     try {
-      const response = await register(name, email, password);
+      const response = await register(name, email, password, updateUserId);
       updateToken(response.accessToken);
       toggleModalRegister();
       navigate("/teachers");
     } catch (err) {
       setError("An account with this email already exists.");
+      toast.error("An account with this email already exists.");
     } finally {
       setSubmitting(false);
     }

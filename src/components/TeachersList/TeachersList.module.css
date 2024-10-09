@@ -109,6 +109,11 @@
   font-weight: bold;
   padding-bottom: 2vw;
 }
+.reviewItem {
+  padding: 0.5vw 0.8vw;
+  border: 1px solid gray;
+  border-radius: 1rem;
+}
 .mainReviewerContainer {
   display: flex;
   flex-direction: column;
@@ -138,4 +143,19 @@
   padding: 1vw 3vw;
   margin-top: 2vw;
   background-color: #f4c550;
+}
+.loadMoreBtn {
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  padding: 14px 39px 14px 39px;
+  border: none;
+  background-color: #121417;
+  border-radius: 12px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.loadMoreBtn:hover,
+.loadMoreBtn:focus {
+  background-color: rgb(54, 54, 54);
 }

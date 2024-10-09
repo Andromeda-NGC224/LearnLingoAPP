@@ -1,24 +1,31 @@
 import { useEffect, useState } from "react";
-import { getTeachers } from "../../FireBase/database.js";
+import { getFavourites, getTeachers } from "../../FireBase/database.js";
 import { FaStar } from "react-icons/fa";
 import { FiBookOpen } from "react-icons/fi";
 import { FaRegHeart } from "react-icons/fa";
 import { FaUserCircle } from "react-icons/fa";
-
+import { updateFavouritesInDB } from "../../utils/filter";
 import css from "./TeachersList.module.css";
+import { useAuth } from "../../utils/AuthContext.jsx";
+import toast from "react-hot-toast";
 
 export const TeachersList = () => {
   const [teachers, setTeachers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [readMore, setReadMore] = useState(false);
+  const [readMore, setReadMore] = useState(null);
+  const [page, setPage] = useState(0);
+  const [favourites, setFavourites] = useState([]);
+  const { token, userId } = useAuth();
+
+  const count = 4;
 
   useEffect(() => {
     const fetchTeachers = async () => {
       try {
-        const data = await getTeachers();
-        console.log(data);
+        const data = await getTeachers(count, page * count);
+
         if (data) {
-          setTeachers(data);
+          setTeachers((prevTeachers) => [...prevTeachers, ...data]);
         }
       } catch (error) {
         console.error("Error fetching teachers:", error);
@@ -28,10 +35,47 @@ export const TeachersList = () => {
     };
 
     fetchTeachers();
-  }, []);
+  }, [page]);
 
-  const toggleReadMore = () => {
-    setReadMore(!readMore);
+  useEffect(() => {
+    const fetchFavourites = async () => {
+      try {
+        const favs = await getFavourites(userId);
+        setFavourites(favs || []);
+      } catch (error) {
+        console.error("Error fetching favourites:", error);
+      }
+    };
+    fetchFavourites();
+  }, [userId]);
+
+  const handleNextPage = () => {
+    setPage((prevPage) => prevPage + 1);
+  };
+
+  const handleFavourite = async (teacher) => {
+    if (!token) {
+      toast.error("Need to login at first!");
+    } else {
+      const favouriteKey = `${teacher.name} ${teacher.surname}`;
+
+      setFavourites((prevFavourites) => {
+        let updatedFavourites;
+        if (prevFavourites.includes(favouriteKey)) {
+          updatedFavourites = prevFavourites.filter(
+            (fav) => fav !== favouriteKey
+          );
+        } else {
+          updatedFavourites = [...prevFavourites, favouriteKey];
+        }
+        updateFavouritesInDB(userId, updatedFavourites);
+        return updatedFavourites;
+      });
+    }
+  };
+
+  const toggleReadMore = (index) => {
+    setReadMore(readMore === index ? null : index);
   };
 
   if (loading) {
@@ -41,6 +85,8 @@ export const TeachersList = () => {
   return (
     <ul className={css.mainList}>
       {teachers.map((teacher, index) => {
+        const favouriteKey = `${teacher.name} ${teacher.surname}`;
+        const isFavourite = favourites.includes(favouriteKey);
         return (
           <li className={css.mainListItem} key={index}>
             <div className={css.imgContainer}>
@@ -90,8 +136,11 @@ export const TeachersList = () => {
                   {teacher.conditions}
                 </li>
               </ul>
-              {!readMore ? (
-                <p onClick={toggleReadMore} className={css.readmore}>
+              {readMore !== index ? (
+                <p
+                  onClick={() => toggleReadMore(index)}
+                  className={css.readmore}
+                >
                   Read more
                 </p>
               ) : (
@@ -130,16 +179,26 @@ export const TeachersList = () => {
                   </li>
                 ))}
               </ul>
-              {readMore && (
+              {readMore === index && (
                 <button className={css.bookingBtn}>Book trial lesson</button>
               )}
             </div>
-            <button className={css.favBtn}>
-              <FaRegHeart size={26} />
+            <button
+              className={css.favBtn}
+              onClick={() => handleFavourite(teacher)}
+            >
+              {isFavourite && token ? (
+                <FaRegHeart size={26} color="red" />
+              ) : (
+                <FaRegHeart size={26} color="black" />
+              )}
             </button>
           </li>
         );
       })}
+      <button className={css.loadMoreBtn} onClick={handleNextPage}>
+        Load more
+      </button>
     </ul>
   );
 };

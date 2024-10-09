@@ -7,12 +7,13 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../utils/AuthContext.jsx";
+import toast from "react-hot-toast";
 
 export default function ModalLogin({ toggleModalLogin }) {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { updateToken } = useAuth();
+  const { updateToken, updateUserId } = useAuth();
 
   const validationSchema = Yup.object().shape({
     email: Yup.string()
@@ -48,12 +49,13 @@ export default function ModalLogin({ toggleModalLogin }) {
   const handleLogin = async (values, { setSubmitting }) => {
     const { email, password } = values;
     try {
-      const response = await login(email, password);
+      const response = await login(email, password, updateUserId);
       updateToken(response.user.accessToken);
       toggleModalLogin();
       navigate("/teachers");
     } catch (err) {
       setError("Incorrect password or login.");
+      toast.error("Incorrect password or login.");
     } finally {
       setSubmitting(false);
     }
