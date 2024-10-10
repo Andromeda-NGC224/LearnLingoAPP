@@ -4,13 +4,20 @@ import { FaStar } from "react-icons/fa";
 import { FiBookOpen } from "react-icons/fi";
 import { FaRegHeart } from "react-icons/fa";
 import { FaUserCircle } from "react-icons/fa";
-import { updateFavouritesInDB } from "../../utils/filter";
+import { updateFavouritesInDB, filterTeachers } from "../../utils/filter";
 import css from "./TeachersList.module.css";
 import { useAuth } from "../../utils/AuthContext.jsx";
 import toast from "react-hot-toast";
+import { FilterList } from "../FilterList/FilterList.jsx";
+import { ModalBooking } from "../ModalBooking/ModalBooking.jsx";
+import Loader from "../Loader/Loader.jsx";
 
 export const TeachersList = () => {
   const [teachers, setTeachers] = useState([]);
+  const [filteredTeachers, setFilteredTeachers] = useState([]);
+  const [filters, setFilters] = useState({});
+  const [bookingTeacher, setBookingTeacher] = useState(null);
+
   const [loading, setLoading] = useState(true);
   const [readMore, setReadMore] = useState(null);
   const [page, setPage] = useState(0);
@@ -22,6 +29,7 @@ export const TeachersList = () => {
   useEffect(() => {
     const fetchTeachers = async () => {
       try {
+        setLoading(true);
         const data = await getTeachers(count, page * count);
 
         if (data) {
@@ -36,6 +44,10 @@ export const TeachersList = () => {
 
     fetchTeachers();
   }, [page]);
+
+  useEffect(() => {
+    setFilteredTeachers(filterTeachers(teachers, filters));
+  }, [teachers, filters]);
 
   useEffect(() => {
     const fetchFavourites = async () => {
@@ -77,18 +89,35 @@ export const TeachersList = () => {
   const toggleReadMore = (index) => {
     setReadMore(readMore === index ? null : index);
   };
+  const openBookingModal = (teacher) => {
+    setBookingTeacher(teacher);
+  };
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  const closeBookingModal = () => {
+    setBookingTeacher(null);
+  };
+
+  const handleFilterChange = (name, value) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [name]: value,
+    }));
+  };
 
   return (
     <ul className={css.mainList}>
-      {teachers.map((teacher, index) => {
+      <FilterList onFilterChange={handleFilterChange} />
+      {filteredTeachers.map((teacher, index) => {
         const favouriteKey = `${teacher.name} ${teacher.surname}`;
         const isFavourite = favourites.includes(favouriteKey);
         return (
           <li className={css.mainListItem} key={index}>
+            {bookingTeacher && (
+              <ModalBooking
+                onClose={closeBookingModal}
+                teacher={bookingTeacher}
+              />
+            )}
             <div className={css.imgContainer}>
               <img
                 className={css.photo}
@@ -180,7 +209,12 @@ export const TeachersList = () => {
                 ))}
               </ul>
               {readMore === index && (
-                <button className={css.bookingBtn}>Book trial lesson</button>
+                <button
+                  onClick={() => openBookingModal(teacher)}
+                  className={css.bookingBtn}
+                >
+                  Book trial lesson
+                </button>
               )}
             </div>
             <button
@@ -196,9 +230,14 @@ export const TeachersList = () => {
           </li>
         );
       })}
-      <button className={css.loadMoreBtn} onClick={handleNextPage}>
-        Load more
-      </button>
+      {teachers.length < 30 ? (
+        <button className={css.loadMoreBtn} onClick={handleNextPage}>
+          Load more
+        </button>
+      ) : (
+        <p>No more teachers left.</p>
+      )}
+      {loading && <Loader />}
     </ul>
   );
 };

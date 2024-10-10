@@ -1,8 +1,10 @@
 .header {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 9% 20px 9%;
+  padding: 2vw 8vw 2vw 8vw;
+  gap: 3vw;
 }
 .active {
   color: #f4c550;
@@ -10,29 +12,29 @@
 .logo {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.5vw;
   font-size: 20px;
   font-weight: 600;
 }
 .navList {
   display: flex;
-  gap: 28px;
+  gap: 2vw;
   align-items: center;
   font-weight: 500;
 }
 .auth {
   display: flex;
-  gap: 16px;
+  gap: 1vw;
 }
 .loginBtn {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.5vw;
   font-size: 16px;
   font-weight: 600;
   border: none;
   background-color: transparent;
-  padding: 14px 0 14px 0;
+  padding: 0.5vw 0 14px 0.5vw;
 }
 .loginBtnText {
   transition: color 0.3s ease-in-out;
@@ -46,10 +48,10 @@
   font-size: 16px;
   font-weight: 600;
   color: #fff;
-  padding: 14px 39px 14px 39px;
+  padding: 12px 2.7vw 12px 2.7vw;
   border: none;
   background-color: #121417;
-  border-radius: 12px;
+  border-radius: 1rem;
   transition: background-color 0.3s ease-in-out;
 }
 

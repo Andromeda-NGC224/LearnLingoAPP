@@ -1,0 +1,34 @@
+.mainList {
+  display: flex;
+  gap: 1.4vw;
+  flex-wrap: wrap;
+  align-self: start;
+}
+.mainListItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5vw;
+}
+.selectInp {
+  outline: none;
+  background-color: #ffffff;
+  border: none;
+  border-radius: 1rem;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 1vw 2vw 1vw 1.25vw;
+  cursor: pointer;
+}
+.mainListItemLabel {
+  color: gray;
+  font-size: 14px;
+  font-weight: 500;
+}
+.optionInp {
+  outline: none;
+  background-color: #ffffff;
+  border: none;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 1rem;
+}

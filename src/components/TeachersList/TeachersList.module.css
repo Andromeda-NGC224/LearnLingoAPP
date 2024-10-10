@@ -3,7 +3,7 @@
   flex-direction: column;
   align-items: center;
   gap: 3vw;
-  padding: 2.5vw 9vw;
+  padding: 2.5vw 0 2.5vw 0;
 }
 
 .mainListItem {
@@ -14,6 +14,7 @@
   border-radius: 20px;
   background-color: #f8f8f8;
   gap: 3vw;
+  box-sizing: border-box;
 }
 .imgContainer {
   border: 2px solid #fbe9ba;

@@ -1,5 +1,6 @@
 import { FaApple } from "react-icons/fa";
 import css from "./HomePage.module.css";
+import { Link } from "react-router-dom";
 
 export default function HomePage() {
   return (
@@ -15,7 +16,9 @@ export default function HomePage() {
             Elevate your language proficiency to new heights by connecting with
             highly qualified and experienced tutors.
           </p>
-          <button className={css.HeroBtn}>Get Started</button>
+          <Link to="/teachers" className={css.HeroBtn}>
+            Get Started
+          </Link>
         </div>
         <div className={css.HeroPicContainer}>
           <div className={css.HeroPicBoy}></div>
