@@ -2,10 +2,11 @@
 This project is a web application designed for users seeking to find and book language tutors online. The application consists of 2 main pages: Home and Teachers, offering a seamless experience for selecting and engaging with language tutors.
 
 ## 🌟 Features:
-  1. Home Page:
+1. Home Page:
 - Showcases the benefits of the tutoring service and includes a clear call-to-action that directs users to the Teachers page.
 - Styled using a palette derived from the provided mockup, ensuring a unique and visually appealing design.
-  2. Teachers Page:
+  
+2. Teachers Page:
 - Displays a list of available tutors, allowing users to filter them by language, student proficiency level, and hourly rates.
 - Implements pagination with a "Load more" button, fetching additional tutor profiles from the database upon clicking.
 
