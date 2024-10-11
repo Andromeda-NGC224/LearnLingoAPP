@@ -12,16 +12,19 @@ import { FilterList } from "../FilterList/FilterList.jsx";
 import { ModalBooking } from "../ModalBooking/ModalBooking.jsx";
 import Loader from "../Loader/Loader.jsx";
 
-export const TeachersList = () => {
+export const TeachersList = ({
+  favouritesFromProps = null,
+  onFavouritesChange,
+  isFavoritesPage = false,
+}) => {
   const [teachers, setTeachers] = useState([]);
   const [filteredTeachers, setFilteredTeachers] = useState([]);
   const [filters, setFilters] = useState({});
   const [bookingTeacher, setBookingTeacher] = useState(null);
-
   const [loading, setLoading] = useState(true);
   const [readMore, setReadMore] = useState(null);
   const [page, setPage] = useState(0);
-  const [favourites, setFavourites] = useState([]);
+  const [localFavourites, setLocalFavourites] = useState([]);
   const { token, userId } = useAuth();
 
   const count = 4;
@@ -31,7 +34,6 @@ export const TeachersList = () => {
       try {
         setLoading(true);
         const data = await getTeachers(count, page * count);
-
         if (data) {
           setTeachers((prevTeachers) => [...prevTeachers, ...data]);
         }
@@ -46,20 +48,32 @@ export const TeachersList = () => {
   }, [page]);
 
   useEffect(() => {
-    setFilteredTeachers(filterTeachers(teachers, filters));
-  }, [teachers, filters]);
-
-  useEffect(() => {
     const fetchFavourites = async () => {
-      try {
-        const favs = await getFavourites(userId);
-        setFavourites(favs || []);
-      } catch (error) {
-        console.error("Error fetching favourites:", error);
+      if (favouritesFromProps === null) {
+        try {
+          const favs = await getFavourites(userId);
+          setLocalFavourites(favs || []);
+        } catch (error) {
+          console.error("Error fetching favourites:", error);
+        }
       }
     };
     fetchFavourites();
-  }, [userId]);
+  }, [favouritesFromProps, userId]);
+
+  useEffect(() => {
+    const favouritesToUse =
+      favouritesFromProps !== null ? favouritesFromProps : localFavourites;
+    const teachersToDisplay =
+      favouritesFromProps !== null
+        ? teachers.filter((teacher) => {
+            const favouriteKey = `${teacher.name} ${teacher.surname}`;
+            return favouritesToUse.includes(favouriteKey);
+          })
+        : teachers;
+
+    setFilteredTeachers(filterTeachers(teachersToDisplay, filters));
+  }, [teachers, filters, favouritesFromProps, localFavourites]);
 
   const handleNextPage = () => {
     setPage((prevPage) => prevPage + 1);
@@ -71,24 +85,35 @@ export const TeachersList = () => {
     } else {
       const favouriteKey = `${teacher.name} ${teacher.surname}`;
 
-      setFavourites((prevFavourites) => {
-        let updatedFavourites;
-        if (prevFavourites.includes(favouriteKey)) {
-          updatedFavourites = prevFavourites.filter(
-            (fav) => fav !== favouriteKey
-          );
-        } else {
-          updatedFavourites = [...prevFavourites, favouriteKey];
+      if (isFavoritesPage) {
+        const updatedFavourites = (
+          favouritesFromProps || localFavourites
+        ).filter((fav) => fav !== favouriteKey);
+        await updateFavouritesInDB(userId, updatedFavourites);
+        if (onFavouritesChange) {
+          onFavouritesChange(favouriteKey);
         }
-        updateFavouritesInDB(userId, updatedFavourites);
-        return updatedFavourites;
-      });
+      } else {
+        setLocalFavourites((prevFavourites) => {
+          let updatedFavourites;
+          if (prevFavourites.includes(favouriteKey)) {
+            updatedFavourites = prevFavourites.filter(
+              (fav) => fav !== favouriteKey
+            );
+          } else {
+            updatedFavourites = [...prevFavourites, favouriteKey];
+          }
+          updateFavouritesInDB(userId, updatedFavourites);
+          return updatedFavourites;
+        });
+      }
     }
   };
 
   const toggleReadMore = (index) => {
     setReadMore(readMore === index ? null : index);
   };
+
   const openBookingModal = (teacher) => {
     setBookingTeacher(teacher);
   };
@@ -104,12 +129,16 @@ export const TeachersList = () => {
     }));
   };
 
+  console.log(localFavourites);
+
   return (
     <ul className={css.mainList}>
       <FilterList onFilterChange={handleFilterChange} />
       {filteredTeachers.map((teacher, index) => {
         const favouriteKey = `${teacher.name} ${teacher.surname}`;
-        const isFavourite = favourites.includes(favouriteKey);
+        const isFavourite = (favouritesFromProps || localFavourites).includes(
+          favouriteKey
+        );
         return (
           <li className={css.mainListItem} key={index}>
             {bookingTeacher && (
@@ -194,7 +223,9 @@ export const TeachersList = () => {
                               </p>
                             </div>
                           </div>
-                          <p>{review.comment}</p>
+                          <p className={css.reviewerComment}>
+                            {review.comment}
+                          </p>
                         </div>
                       </li>
                     ))}
@@ -221,11 +252,10 @@ export const TeachersList = () => {
               className={css.favBtn}
               onClick={() => handleFavourite(teacher)}
             >
-              {isFavourite && token ? (
-                <FaRegHeart size={26} color="red" />
-              ) : (
-                <FaRegHeart size={26} color="black" />
-              )}
+              <FaRegHeart
+                size={26}
+                color={isFavourite && token ? "red" : "black"}
+              />
             </button>
           </li>
         );

@@ -25,7 +25,7 @@
   overflow: hidden;
 }
 .HeroTitle {
-  font-size: 2.8vw;
+  font-size: 48px;
   font-weight: 600;
   margin-bottom: 2.2vw;
 }
@@ -38,7 +38,7 @@
   line-height: 0.8;
 }
 .HeroDescription {
-  font-size: 1vw;
+  font-size: 16px;
   font-weight: 500;
   max-width: 80%;
   margin-bottom: 2.8vw;
@@ -50,7 +50,7 @@
   border: none;
   border-radius: 12px;
   background-color: #f4c550;
-  font-size: 1.25vw;
+  font-size: 18px;
   font-weight: 600;
   transition: background-color 0.3s ease-in-out;
 }
@@ -93,7 +93,7 @@
   bottom: 3.82vw;
 }
 .HeroAchievements {
-  padding: 1vw 4vw;
+  padding: 40px 120px;
   border: 2px dashed #f4c550;
   border-radius: 30px;
   box-sizing: border-box;
@@ -103,24 +103,79 @@
 }
 .AchievementsList {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
 }
 .AchievementsItem {
   display: flex;
   align-items: center;
-  gap: 1.11vw;
+  gap: 16px;
 }
 .AchievementsItemNum {
-  font-size: 1.94vw;
+  font-size: 28px;
   font-weight: 500;
   text-wrap: nowrap;
 }
 .AchievementsItemText {
   max-width: 6.67vw;
-  font-size: 1.5vw;
+  font-size: 14px;
   color: #121417;
   opacity: 0.7;
   text-wrap: wrap;
+}
+@media screen and (max-width: 1024px) {
+  .HeroTitle {
+    font-size: 28px;
+  }
+  .HeroText {
+    padding: 3.5vw 5vw 4vw 4vw;
+  }
+  .HeroDescription {
+    font-size: 12px;
+  }
+  .HeroBtn {
+    padding: 1.1vw 4.5vw;
+    font-size: 14px;
+  }
+  .HeroAchievements {
+    padding: 20px 60px;
+  }
+  .AchievementsItemNum {
+    font-size: 20px;
+  }
+  .AchievementsItemText {
+    font-size: 10px;
+  }
+  .AchievementsItem {
+    gap: 8px;
+  }
+}
+@media screen and (max-width: 767px) and (min-width: 250px) {
+  .Hero {
+    flex-wrap: wrap;
+    height: 100%;
+  }
+  .HeroText {
+    width: 100%;
+  }
+  .HeroPicContainer {
+    width: 100%;
+    min-height: 40vw;
+  }
+  .AchievementsList {
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  .AchievementsItemNum {
+    font-size: 14px;
+  }
+  .AchievementsItemText {
+    font-size: 8px;
+  }
+  .HeroAchievements {
+    max-height: 180px;
+    padding: 20 px 40px;
+  }
 }

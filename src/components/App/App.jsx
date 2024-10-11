@@ -12,6 +12,9 @@ const TeachersPage = lazy(() =>
 const NotFoundPage = lazy(() =>
   import("../../pages/NotFoundPage/NotFoundPage.jsx")
 );
+const FavoritesPage = lazy(() =>
+  import("../../pages/FavoritesPage/FavoritesPage.jsx")
+);
 
 export default function App() {
   return (
@@ -20,6 +23,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/teachers" element={<TeachersPage />} />
+          <Route path="/favorites" element={<FavoritesPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Layout>

@@ -15,7 +15,7 @@
   box-sizing: border-box;
   position: relative;
   width: 41.67vw;
-  min-width: 320px;
+  min-width: 290px;
   max-width: 600px;
   max-height: 95vh;
   padding: 1.7vw 3.5vw;
@@ -143,4 +143,30 @@ h2 {
 .submitButton:hover,
 .submitButton:focus {
   background-color: #ffdc86;
+}
+@media screen and (max-width: 768px) {
+  .modalContainer {
+    width: 80vw;
+    padding: 5vw;
+  }
+
+  h1 {
+    font-size: 28px;
+  }
+  .description {
+    font-size: 14px;
+  }
+  .form p {
+    font-size: 18px;
+  }
+  .radio {
+    font-size: 14px;
+  }
+  .inputField {
+    font-size: 14px;
+    height: 40px;
+  }
+  .submitButton {
+    min-height: 40px;
+  }
 }
