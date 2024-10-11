@@ -19,7 +19,6 @@ export default function FavoritesPage() {
     };
     fetchFavorites();
   }, [userId]);
-  console.log(favourites);
 
   const handleFavouritesChange = (updatedFavourites) => {
     setFavourites((prevFavourites) =>

@@ -129,8 +129,6 @@ export const TeachersList = ({
     }));
   };
 
-  console.log(localFavourites);
-
   return (
     <ul className={css.mainList}>
       <FilterList onFilterChange={handleFilterChange} />
